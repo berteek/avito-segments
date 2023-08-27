@@ -21,7 +21,7 @@ jobs:
       with:
         go-version: '1.21'
     - name: Lint
-      run: make lint
+      uses: super-linter/super-linter@v5
 
     - name: Build
       run: make build
