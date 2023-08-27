@@ -2,6 +2,7 @@ package main
 
 import (
     "net/http"
+    "log"
 
     "github.com/gin-gonic/gin"
 )
@@ -13,5 +14,8 @@ func main() {
             "message": "pong!!!",
         })
     })
-    r.Run()
+    err := r.Run()
+    if err != nil {
+        log.Fatalf("could not run the engine: %v", err)
+    }
 }

@@ -1,6 +1,14 @@
+.PHONY: lint
+lint:
+	golangci-lint run
+
 .PHONY: build
 build:
 	go build -o app cmd/main.go
+
+.PHONY: test
+test:
+	go test ./...
 
 .PHONY: run
 run:
