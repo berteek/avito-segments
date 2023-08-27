@@ -1,3 +1,3 @@
 # avito-segments
 
-https://github.com/<OWNER>/<REPOSITORY>/actions/workflows/<WORKFLOW_FILE>/badge.svg
+https://github.com/berteek/avito-segments/actions/workflows/lint_and_test.yml/badge.svg
