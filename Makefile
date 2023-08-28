@@ -16,12 +16,12 @@ run:
 
 .PHONY: dub
 dub:
-	docker compose up --build
+	docker compose -f build/docker-compose.yaml up --build
 
 .PHONY: du
 du:
-	docker compose up
+	docker compose -f build/docker-compose.yaml up
 
 .PHONY: dd
 dd:
-	docker compose down
+	docker compose -f build/docker-compose.yaml down
