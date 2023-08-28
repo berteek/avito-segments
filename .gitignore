@@ -20,3 +20,6 @@ app
 
 # Go workspace file
 go.work
+
+# Docker logs
+build/tmp/
