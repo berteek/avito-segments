@@ -13,8 +13,5 @@ func (u User) GetId() int {
 }
 
 func (u User) IsEqual(ou User) bool {
-    if u.id != ou.id {
-        return false
-    }
-    return true
+    return u.id == ou.id
 }
