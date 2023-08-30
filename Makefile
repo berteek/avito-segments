@@ -12,7 +12,7 @@ test:
 
 .PHONY: run
 run:
-	./httpapi
+	cmd/httpapi/httpapi
 
 .PHONY: dub
 dub:
