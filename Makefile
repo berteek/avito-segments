@@ -4,7 +4,7 @@ lint:
 
 .PHONY: build
 build:
-	go build -o httpapi cmd/httpapi/main.go
+	go build -o cmd/httpapi/httpapi cmd/httpapi/main.go
 
 .PHONY: test
 test:

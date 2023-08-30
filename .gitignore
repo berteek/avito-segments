@@ -9,7 +9,7 @@
 *.dylib
 
 # App binary
-httpapi
+cmd/httpapi/httpapi
 
 # Test binary, built with `go test -c`
 *.test
