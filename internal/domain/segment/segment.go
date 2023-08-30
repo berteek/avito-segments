@@ -10,22 +10,22 @@ type Segment struct {
     users []user.User
 }
 
-func NewSegment(id int, name string, users []user.User) *Segment {
-    return &Segment{
+func NewSegment(id int, name string, users []user.User) Segment {
+    return Segment{
         id:    id,
         name:  name,
         users: users,
     }
 }
 
-func (s *Segment) GetId() int {
+func (s Segment) GetId() int {
     return s.id
 }
 
-func (s *Segment) GetName() string {
+func (s Segment) GetName() string {
     return s.name
 }
 
-func (s *Segment) GetUsers() []user.User {
+func (s Segment) GetUsers() []user.User {
     return s.users
 }
