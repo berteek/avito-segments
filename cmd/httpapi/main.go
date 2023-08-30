@@ -1,20 +1,14 @@
 package main
 
 import (
-    "net/http"
     "log"
 
-    "github.com/gin-gonic/gin"
+    "github.com/berteek/avito-segments/internal/api"
 )
 
 func main() {
-    r := gin.Default()
-    r.GET("/ping", func(c *gin.Context) {
-        c.JSON(http.StatusOK, gin.H{
-            "message": "pong!!!",
-        })
-    })
-    err := r.Run()
+    e := api.MakeEngine()
+    err := e.Run()
     if err != nil {
         log.Fatalf("could not run the engine: %v", err)
     }
