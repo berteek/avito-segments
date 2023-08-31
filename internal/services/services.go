@@ -5,6 +5,7 @@ import (
 )
 
 type SegmentRepository interface {
+    CreateUser(ctx context.Context) error
     CreateSegment(ctx context.Context, slug string) error
     DeleteSegment(ctx context.Context, slug string) error
     GetActiveSegmentsForUser(ctx context.Context, userID int) ([]string, error)
@@ -19,6 +20,11 @@ func NewSegmentService(repo SegmentRepository) SegmentService {
     return SegmentService{
         repo: repo,
     }
+}
+
+func (s SegmentService) CreateUser(ctx context.Context) error {
+    err := s.repo.CreateUser(ctx)
+    return err
 }
 
 func (s SegmentService) CreateSegment(ctx context.Context, slug string) error {
