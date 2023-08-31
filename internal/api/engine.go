@@ -15,9 +15,9 @@ type SegmentService interface {
 
 func MakeEngine(s SegmentService) *gin.Engine {
     e := gin.Default()
-    e.POST("/create_seg", MakeCreateSegmentHandler(s))
-    e.POST("/delete_seg", MakeDeleteSegmentHandler(s))
+    e.POST("/create_seg",            MakeCreateSegmentHandler(s))
+    e.POST("/delete_seg",            MakeDeleteSegmentHandler(s))
     e.POST("/add_del_seg_from_user", MakeAddAndDeleteSegmentsFromUserHandler(s))
-    e.POST("/active_seg_for_user", MakeGetActiveSegmentsForUserHandler(s))
+    e.GET("/active_seg_for_user",    MakeGetActiveSegmentsForUserHandler(s))
     return e
 }
