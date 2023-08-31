@@ -7,6 +7,8 @@ import (
 type SegmentRepository interface {
     CreateSegment(ctx context.Context, slug string) error
     DeleteSegment(ctx context.Context, slug string) error
+    GetActiveSegmentsForUser(ctx context.Context, userID int) ([]string, error)
+    AddAndDeleteSegmentsFromUser(ctx context.Context, userID int, segAdd []string, segDel []string) error
 }
 
 type SegmentService struct {
@@ -27,4 +29,14 @@ func (s SegmentService) CreateSegment(ctx context.Context, slug string) error {
 func (s SegmentService) DeleteSegment(ctx context.Context, slug string) error {
     err := s.repo.DeleteSegment(ctx, slug)
     return err
+}
+
+func (s SegmentService) AddAndDeleteSegmentsFromUser(ctx context.Context, userID int, segAdd []string, segDel []string) error {
+    err := s.repo.AddAndDeleteSegmentsFromUser(context.Background(), userID, segAdd, segDel)
+    return err
+}
+
+func (s SegmentService) GetActiveSegmentsForUser(ctx context.Context, userID int) ([]string, error) {
+    segments, err := s.repo.GetActiveSegmentsForUser(ctx, userID)
+    return segments, err
 }
