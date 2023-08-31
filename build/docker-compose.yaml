@@ -7,4 +7,30 @@ services:
       - "8080:8080"
     volumes:
       - ..:/app
+    environment:
+      DATABASE_URL: postgres://admin:admin@db:5432/seg
+    networks:
+      - mainnet
     command: air cmd/httpapi/main.go
+  db:
+    image: postgres:15.4-alpine3.18
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+      - type: bind
+        source: ../sql/create_db.sql
+        target: /sql/create_db.sql
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: seg
+    networks:
+      - mainnet
+
+networks:
+  mainnet:
+
+volumes:
+  db:
