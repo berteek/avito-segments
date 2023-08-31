@@ -4,9 +4,26 @@ import (
     "net/http"
     "context"
     "fmt"
+    "errors"
 
     "github.com/gin-gonic/gin"
 )
+
+func MakeCreateUserHandler(s SegmentService) func(c *gin.Context) {
+    logError := makeLogErrorFunc("unable to create a user")
+    return func(c *gin.Context) {
+        err := s.CreateUser(context.Background())
+        if err != nil {
+            logError(c, err)
+            return
+        }
+
+        c.JSON(http.StatusOK, gin.H{
+            "status": "ok",
+            "message": "successfully created a user",
+        })
+    }
+}
 
 func MakeCreateSegmentHandler(s SegmentService) func(c *gin.Context) {
     logError := makeLogErrorFunc("unable to create a segment")
@@ -56,16 +73,16 @@ func MakeAddAndDeleteSegmentsFromUserHandler(s SegmentService) func(c *gin.Conte
     logError := makeLogErrorFunc("unable to add or delete segments from user")
     return func(c *gin.Context) {
         type requestBody struct {
-            UserID           int      `json:"user_id"`
-            SegmentsToAdd    []string `json:"segments_to_add"`
-            SegmentsToDelete []string `json:"segments_to_delete"`
+            UserID           int      `json:"user_id"            binding:"required"`
+            SegmentsToAdd    []string `json:"segments_to_add"    binding:"required"`
+            SegmentsToDelete []string `json:"segments_to_delete" binding:"required"`
         }
 
         parseRequestBodyFromContext := func(c *gin.Context) (requestBody, error) {
             var rb requestBody
-            err := c.BindJSON(&rb)
+            err := c.ShouldBindJSON(&rb)
             if err != nil {
-                return requestBody{}, err
+                return requestBody{}, errors.New("invalid json structure")
             }
             return rb, nil
         }
@@ -99,11 +116,11 @@ func MakeGetActiveSegmentsForUserHandler(s SegmentService) func(c *gin.Context) 
     logError := makeLogErrorFunc("unable to get active segments for user")
     return func(c *gin.Context) {
         reqBody := struct {
-            UserID int `json:"user_id"`
+            UserID int `json:"user_id" binding:"required"`
         }{}
-        err := c.BindJSON(&reqBody)
+        err := c.ShouldBindJSON(&reqBody)
         if err != nil {
-            logError(c, err)
+            logError(c, errors.New("invalid json structure"))
             return
         }
 
@@ -116,18 +133,19 @@ func MakeGetActiveSegmentsForUserHandler(s SegmentService) func(c *gin.Context) 
 
         c.JSON(http.StatusOK, gin.H{
             "status": "ok",
-            "message": fmt.Sprintf("found active segments for user (id=%d): %v", userID, activeSegments),
+            "message": fmt.Sprintf("active segments for user (id=%d) found", userID),
+            "segments": activeSegments,
         })
     }
 }
 
 func getSlugFromContext(c *gin.Context) (string, error) {
     reqBody := struct {
-        Slug string `json:"slug"`
+        Slug string `json:"slug" binding:"required"`
     }{}
-    err := c.BindJSON(&reqBody)
+    err := c.ShouldBindJSON(&reqBody)
     if err != nil {
-        return "", err
+        return "", errors.New("invalid json structure")
     }
     return reqBody.Slug, nil
 }
